@@ -1,5 +1,4 @@
 ﻿using Resonance.Services;
-using System.ComponentModel;
 
 namespace Resonance
 {
@@ -11,10 +10,16 @@ namespace Resonance
 
             Unit unit1 = new Unit();
 
-            unit1.Value = val;
+            unit1.ParametricValue = val;
 
-            Console.WriteLine(unit1.Value);
+            Console.WriteLine(unit1.ParametricValue);
             Console.WriteLine(unit1.SIValue.ToString("0.##################################"));
+            Console.WriteLine("VALS");
+
+            foreach (var item in Unit.ListParametricUnitForAllExps(unit1))
+            {
+                Console.WriteLine(item);
+            }
 
             Console.ReadLine();
         }
