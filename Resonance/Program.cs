@@ -6,22 +6,35 @@ namespace Resonance
     {
         static void Main(string[] args)
         {
-            string? val = Console.ReadLine();
 
-            Unit unit1 = new Unit();
+            Unit L = new Unit();
+            Unit C = new Unit();
+            Unit R = new Unit();
 
-            unit1.ParametricValue = val;
+            L.ParametricValue = "2m";
+            C.ParametricValue = "10u";
+            R.ParametricValue = "3";
 
-            Console.WriteLine(unit1.ParametricValue);
-            Console.WriteLine(unit1.SIValue.ToString("0.##################################"));
-            Console.WriteLine("VALS");
+            var lc = new LCSeries(R,L,C,null);
 
-            foreach (var item in Unit.ListParametricUnitForAllExps(unit1))
-            {
-                Console.WriteLine(item);
-            }
+            LCSeries.F_LC(lc);
 
-            Console.ReadLine();
+            Console.WriteLine("Q");
+            Console.WriteLine(lc.Q.SIValue);
+            Console.WriteLine("R");
+            Console.WriteLine(lc.R.SIValue);
+            Console.WriteLine("C");
+            Console.WriteLine(lc.C.SIValue);
+            Console.WriteLine("BW");
+            Console.WriteLine(lc.BW.SIValue);
+            Console.WriteLine("BW_FL");
+            Console.WriteLine(lc.BW_FL.SIValue);
+            Console.WriteLine("BW_FH");
+            Console.WriteLine(lc.BW_FH.SIValue);
+            Console.WriteLine("F");
+            Console.WriteLine(lc.F.SIValue);
+            Console.WriteLine("XL");
+            Console.WriteLine(lc.XL.SIValue);
         }
     }
 }

@@ -23,6 +23,7 @@
             }
             set
             {
+                _prefix = Prefixes.none;
                 _value = value;
             }
         }
