@@ -15,7 +15,7 @@ namespace Resonance
             C.ParametricValue = "100u";
             R.SIValue = 0.01;
 
-            var lc = new LCSeries(R, L, C, null);
+            var lc = new LCSeries(R, L, C);
 
             var simulation = new UnitSweep(
                 new Unit() { ParametricValue="2u"},

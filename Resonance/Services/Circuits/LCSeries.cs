@@ -4,24 +4,166 @@ namespace Resonance.Services.Circuits
 {
     public class LCSeries : Circuit
     {
-        public Unit L { get; set; }
-        public Unit C { get; set; }
-        public Unit F { get; set; }
-        public Unit R { get; set; }
-        public Unit XL { get; set; }
-        public Unit XC { get; set; }
-        public Unit Q { get; set; }
-        public Unit BW { get; set; }
-        public Unit BW_FL { get; set; }
-        public Unit BW_FH { get; set; }
-        public Unit Z { get; set; }
+        Unit _L;
+        Unit _C;
+        Unit _F;
+        Unit _R;
+        Unit _XL;
+        Unit _XC;
+        Unit _Q;
+        Unit _BW;
+        Unit _BW_FL;
+        Unit _BW_FH;
+        Unit _Z;
+        public Unit L
+        {
+            get
+            {
+                if (_L == null)
+                    _L = new Unit();
+                return _L;
+            }
+            set
+            {
+                _L = value;
+            }
+        }
+        public Unit C
+        {
+            get
+            {
+                if (_C == null)
+                    _C = new Unit();
+                return _C;
+            }
+            set
+            {
+                _C = value;
+            }
+        }
+        public Unit F
+        {
+            get
+            {
+                if (_F == null)
+                    _F = new Unit();
+                return _F;
+            }
+            set
+            {
+                _F = value;
+            }
+        }
+        public Unit R
+        {
+            get
+            {
+                if (_R == null)
+                    _R = new Unit();
+                return _R;
+            }
+            set
+            {
+                _R = value;
+            }
+        }
+        public Unit XL
+        {
+            get
+            {
+                if (_XL == null)
+                    _XL = new Unit();
+                return _XL;
+            }
+            set
+            {
+                _XL = value;
+            }
+        }
+        public Unit XC
+        {
+            get
+            {
+                if (_XC == null)
+                    _XC = new Unit();
+                return _XC;
+            }
+            set
+            {
+                _XC = value;
+            }
+        }
+        public Unit Q
+        {
+            get
+            {
+                if (_Q == null)
+                    _Q = new Unit();
+                return _Q;
+            }
+            set
+            {
+                _Q = value;
+            }
+        }
+        public Unit BW
+        {
+            get
+            {
+                if (_BW == null)
+                    _BW = new Unit();
+                return _BW;
+            }
+            set
+            {
+                _BW = value;
+            }
+        }
+        public Unit BW_FL
+        {
+            get
+            {
+                if (_BW_FL == null)
+                    _BW_FL = new Unit();
+                return _BW_FL;
+            }
+            set
+            {
+                _BW_FL = value;
+            }
+        }
+        public Unit BW_FH
+        {
+            get
+            {
+                if (_BW_FH == null)
+                    _BW_FH = new Unit();
+                return _BW_FH;
+            }
+            set
+            {
+                _BW_FH = value;
+            }
+        }
+        public Unit Z
+        {
+            get
+            {
+                if (_Z == null)
+                    _Z = new Unit();
+                return _Z;
+            }
+            set
+            {
+                _Z = value;
+            }
+        }
 
-        public LCSeries(Unit? r, Unit? l, Unit? c, Unit? f)
+        public LCSeries(Unit? r, Unit? l, Unit? c)
         {
             R = r;
             L = l;
-            C = c;
-            F = f;            
+            C = c;                      
         }
 
         public static void F_LC(LCSeries lc)
@@ -58,86 +200,46 @@ namespace Resonance.Services.Circuits
 
         static void Calc_F(LCSeries lc)
         {
-            if (lc.L == null || lc.C == null)
-                return;
-            if (lc.F == null)
-                lc.F = new Unit();
-            lc.F.SIValue = 1 / (2 * Math.PI * Math.Sqrt(lc.L.SIValue * lc.C.SIValue));
+            lc.F.SIValue = 1 / (2 * Math.PI * Math.Sqrt(lc.L * lc.C));
         }
 
         static void Calc_C(LCSeries lc)
         {
-            if (lc.F == null || lc.L == null)
-                return;
-            if (lc.C == null)
-                lc.C = new Unit();
-            lc.C.SIValue = 1 / (Math.Pow(2 * Math.PI * lc.F.SIValue, 2) * lc.L.SIValue);
+            lc.C.SIValue = 1 / (Math.Pow(2 * Math.PI * lc.F, 2) * lc.L);
         }
 
         static void Calc_L(LCSeries lc)
         {
-            if (lc.F == null || lc.C == null)
-                return;
-            if (lc.L == null)
-                lc.L = new Unit();
-            lc.L.SIValue = 1 / (Math.Pow(2 * Math.PI * lc.F.SIValue, 2) * lc.C.SIValue);
+            lc.L.SIValue = 1 / (Math.Pow(2 * Math.PI * lc.F, 2) * lc.C);
         }
 
         static void Calc_XL(LCSeries lc)
         {
-            if (lc.F == null || lc.L == null)
-                return;
-            if (lc.XL == null)
-                lc.XL = new Unit();
-            lc.XL.SIValue = 2 * Math.PI * lc.F.SIValue * lc.L.SIValue;
+            lc.XL.SIValue = 2 * Math.PI * lc.F * lc.L;
         }
 
         static void Calc_XC(LCSeries lc)
         {
-            if (lc.F == null || lc.C == null)
-                return;
-            if (lc.XC == null)
-                lc.XC = new Unit();
-            lc.XC.SIValue = 1 / (2 * Math.PI * lc.F.SIValue * lc.C.SIValue);
+            lc.XC.SIValue = 1 / (2 * Math.PI * lc.F * lc.C);
         }
 
         static void Calc_Q(LCSeries lc)
         {
-            if (lc.XL == null || lc.R == null)
-                return;
-            if (lc.Q == null)
-                lc.Q = new Unit();
-            lc.Q.SIValue = lc.XL.SIValue / lc.R.SIValue;
+            lc.Q.SIValue = lc.XL / lc.R;
         }
 
         static void Calc_BW(LCSeries lc)
         {
-            if (lc.Q == null || lc.F == null)
-                return;
-            if (lc.BW == null)
-                lc.BW = new Unit();
-            lc.BW.SIValue = lc.F.SIValue / lc.Q.SIValue;
-            if (lc.BW_FL == null)
-                lc.BW_FL = new Unit();
-            lc.BW_FL.SIValue = lc.F.SIValue - 0.5 * lc.BW.SIValue;
-            if (lc.BW_FH == null)
-                lc.BW_FH = new Unit();
-            lc.BW_FH.SIValue = lc.F.SIValue + 0.5 * lc.BW.SIValue;
+            lc.BW.SIValue = lc.F / lc.Q;
+            lc.BW_FL.SIValue = lc.F - 0.5 * lc.BW;
+            lc.BW_FH.SIValue = lc.F + 0.5 * lc.BW;
         }
 
         static void Calc_Z(LCSeries lc)
         {
-            if (lc.R != null)
-            {
-                Calc_XL(lc);
-                Calc_XC(lc);
-                if (lc.XL != null && lc.XC != null)
-                {
-                    if (lc.Z == null)
-                        lc.Z = new Unit();
-                    lc.Z.SIValue = lc.R.SIValue + (lc.XL.SIValue - lc.XC.SIValue);
-                }
-            }
+            Calc_XL(lc);
+            Calc_XC(lc);
+            lc.Z.SIValue = lc.R + (lc.XL - lc.XC);
         }                        
 
     }

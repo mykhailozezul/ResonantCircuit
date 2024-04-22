@@ -14,9 +14,9 @@ namespace Resonance.Services
 
         public static void Sweep<T>(UnitSweep sweepSettings, T circuitModule, Unit valueToSweep, Iterator<T> calcFunction) where T : Circuit
         {            
-            double range = sweepSettings.StopValue.SIValue - sweepSettings.StartValue.SIValue;
-            int iterationsCount = (int)Math.Floor(range / sweepSettings.Step.SIValue);
-            double sweeper = sweepSettings.StartValue.SIValue;
+            double range = sweepSettings.StopValue - sweepSettings.StartValue;
+            int iterationsCount = (int)Math.Floor(range / sweepSettings.Step);
+            double sweeper = sweepSettings.StartValue;
             string result = "";
             bool showColumnNames = true;
             for (int i = 0; i < iterationsCount; i++)
@@ -24,7 +24,7 @@ namespace Resonance.Services
                 valueToSweep.SIValue = sweeper;
                 calcFunction(circuitModule);                             
                 result += circuitModule.Output(showColumnNames, circuitModule);                
-                sweeper += sweepSettings.Step.SIValue;
+                sweeper += sweepSettings.Step;
                 showColumnNames = false;
             }
             sweepSettings.OutputResult = result;

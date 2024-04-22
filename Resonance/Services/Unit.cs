@@ -82,6 +82,11 @@
                 return Prefixes.none;            
         }
 
+        public static implicit operator double(Unit a)
+        {
+            return a.SIValue;
+        }
+
     }
 
     enum Prefixes
