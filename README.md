@@ -1,7 +1,7 @@
 <h3>Resonant Circuit Calculator</h3>
 <p>.NET 8-compatible classes for calculating parameters of parallel and series RLC resonant circuits. This personal project is designed for exploring, analyzing, and enhancing understanding of RLC filters and resonant circuits.</p>
 <h4>There are three main parts:</h4>
-<h4>Units</h4>
+<h4><bold>Units</bold></h4>
 
 <p>The Unit class functions as a value container. To create a Unit and assign values, use the following syntax:</p>
 
@@ -24,7 +24,7 @@ L.SIValue = 0.1;  // Assign an SI value
   <li>t = 12</li>
 </ul>
 
-<h4>Circuits</h4>
+<h4><bold>Circuits</bold></h4>
 
 <p>Currently, there are two types of RLC circuits: series and parallel. To create instances of these circuits, use the following code:</p>
 
@@ -34,7 +34,7 @@ var filterParallel = new LCParallel(R, L, C);  // Create a parallel RLC circuit
 
 <p>Each constructor requires three parameters: resistance (R), inductance (L), and capacitance (C).</p>
 
-<h5>Circuit Methods</h5>
+<h5><bold>Circuit Methods</bold></h5>
 
 <p>Each circuit type offers four public methods to explore various characteristics and responses:</p>
 
@@ -48,6 +48,49 @@ var filterParallel = new LCParallel(R, L, C);  // Create a parallel RLC circuit
 <p>Here's how you can utilize these methods:</p>
 
 <code>var plc = new LCParallel(R, L, C); // Create an instance of a parallel RLC circuit
-
 LCParallel.F_LC(plc); // Updates the circuit instance with new frequency based on L and C inputs
 </code>
+
+<h4><bold>Sweeping values</bold></h4>
+
+<p>The Sweep class enables the application of an array of values to a circuit to observe how the circuit reacts to changes. For instance, you can apply a frequency sweep from 1 mHz to 100 mHz with a step of 5 mHz to an RLC circuit. This is particularly useful for analyzing how the circuit filters different frequencies.</p>
+
+<p>To use this functionality, first create an instance of the UnitSweep class with start value, stop value, and step:</p>
+
+<code>var sweepSettings = new UnitSweep(
+    new Unit() { ParametricValue = "5000" },  // Start value
+    new Unit() { ParametricValue = "20000" }, // Stop value
+    new Unit() { ParametricValue = "100" }    // Step
+);</code>
+
+<p>Next, apply these settings to the circuit using the Sweep method:</p>
+
+<code>UnitSweep.Sweep<LCParallel>(
+    sweepSettings, 
+    circuitInstance, 
+    circuitInstance.F, 
+    LCParallel.Input_F
+);</code>
+<p>First parameter - sweep settings, second - instance of the LC circuit, third - the circuit's unit to be swept, fourth - method executed with each sweep value change</p>
+
+<p>The results of the sweep are stored within the UnitSweep instance in the OutputResult property. Each sweep operation maintains its own results:</p>
+<code>Console.WriteLine(sweepSettings.OutputResult); // Output sweep result to the console</code>
+
+<p>The result of the sweep is output in CSV format, allowing it to be saved to a CSV file for further processing with Excel tools and graphs. This method provides a comprehensive and interactive way to study circuit behavior under various conditions.</p>
+
+<p>Results include:</p>
+<ul>
+  <li>L - Inductance</li>
+  <li>C - Capacitance</li>
+  <li>F - Frequency</li>
+  <li>R - Resistance</li>
+  <li>XL - Inductor Reactance</li>
+  <li>XC - Capacitor Reactance</li>
+  <li>Q - Quality factor</li>
+  <li>BW - Circuit Bandwidth</li>
+  <li>BW_FL - Bandwidth lowest limit</li>
+  <li>BW_FH - Bandwidth highest limit</li>
+  <li>Z - Impendance</li>
+  <li>WL - Wave length</li>
+</ul>
+
