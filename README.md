@@ -94,4 +94,7 @@ LCParallel.F_LC(plc); // Updates the circuit instance with new frequency based o
   <li>Z - Impendance</li>
   <li>WL - Wave length</li>
 </ul>
-
+<p>Console output</p>
+![image](https://github.com/mykhailozezul/ResonantCircuit/assets/110465477/e1351846-2eb5-479a-85cc-a1dc7e8f3f4c)
+<p>Copied to Excel</p>
+![image](https://github.com/mykhailozezul/ResonantCircuit/assets/110465477/c1a073ac-f658-4f98-8301-bd22788ef15d)
