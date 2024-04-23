@@ -1,7 +1,7 @@
 <h3>Resonant Circuit Calculator</h3>
 <p>.NET 8-compatible classes for calculating parameters of parallel and series RLC resonant circuits. This personal project is designed for exploring, analyzing, and enhancing understanding of RLC filters and resonant circuits.</p>
 <h4>There are three main parts:</h4>
-<h4><bold>Units</bold></h4>
+<h3><bold>Units</bold></h3>
 
 <p>The Unit class functions as a value container. To create a Unit and assign values, use the following syntax:</p>
 
@@ -24,7 +24,7 @@ L.SIValue = 0.1;  // Assign an SI value
   <li>t = 12</li>
 </ul>
 
-<h4><bold>Circuits</bold></h4>
+<h3><bold>Circuits</bold></h3>
 
 <p>Currently, there are two types of RLC circuits: series and parallel. To create instances of these circuits, use the following code:</p>
 
@@ -51,7 +51,7 @@ var filterParallel = new LCParallel(R, L, C);  // Create a parallel RLC circuit
 LCParallel.F_LC(plc); // Updates the circuit instance with new frequency based on L and C inputs
 </code>
 
-<h4><bold>Sweeping values</bold></h4>
+<h3><bold>Sweeping values</bold></h3>
 
 <p>The Sweep class enables the application of an array of values to a circuit to observe how the circuit reacts to changes. For instance, you can apply a frequency sweep from 1 mHz to 100 mHz with a step of 5 mHz to an RLC circuit. This is particularly useful for analyzing how the circuit filters different frequencies.</p>
 
@@ -74,6 +74,7 @@ LCParallel.F_LC(plc); // Updates the circuit instance with new frequency based o
 <p>First parameter - sweep settings, second - instance of the LC circuit, third - the circuit's unit to be swept, fourth - method executed with each sweep value change</p>
 
 <p>The results of the sweep are stored within the UnitSweep instance in the OutputResult property. Each sweep operation maintains its own results:</p>
+
 <code>Console.WriteLine(sweepSettings.OutputResult); // Output sweep result to the console</code>
 
 <p>The result of the sweep is output in CSV format, allowing it to be saved to a CSV file for further processing with Excel tools and graphs. This method provides a comprehensive and interactive way to study circuit behavior under various conditions.</p>
