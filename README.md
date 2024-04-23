@@ -5,8 +5,7 @@
 
 <p>The Unit class functions as a value container. To create a Unit and assign values, use the following syntax:</p>
 
-<code>
-Unit L = new Unit();  // Create a unit
+<code>Unit L = new Unit();  // Create a unit
 L.ParametricValue = "2u";  // Assign a parametric value
 L.SIValue = 0.1;  // Assign an SI value
 </code>
@@ -29,8 +28,7 @@ L.SIValue = 0.1;  // Assign an SI value
 
 <p>Currently, there are two types of RLC circuits: series and parallel. To create instances of these circuits, use the following code:</p>
 
-<code>
-var filterSeries = new LCSeries(R, L, C);  // Create a series RLC circuit
+<code>var filterSeries = new LCSeries(R, L, C);  // Create a series RLC circuit
 var filterParallel = new LCParallel(R, L, C);  // Create a parallel RLC circuit
 </code>
 
@@ -49,8 +47,7 @@ var filterParallel = new LCParallel(R, L, C);  // Create a parallel RLC circuit
 
 <p>Here's how you can utilize these methods:</p>
 
-<code>
-var plc = new LCParallel(R, L, C); // Create an instance of a parallel RLC circuit
+<code>var plc = new LCParallel(R, L, C); // Create an instance of a parallel RLC circuit
 
 LCParallel.F_LC(plc); // Updates the circuit instance with new frequency based on L and C inputs
 </code>
