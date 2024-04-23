@@ -5,9 +5,9 @@
 
 <p>The Unit class functions as a value container. To create a Unit and assign values, use the following syntax:</p>
 
-<code>Unit L = new Unit();  // Create a unit</code>
-<code>L.ParametricValue = "2u";  // Assign a parametric value</code>
-<code>L.SIValue = 0.1;  // Assign an SI value</code>
+<code>Unit L = new Unit();  // Create a unit
+L.ParametricValue = "2u";  // Assign a parametric value
+L.SIValue = 0.1;  // Assign an SI value</code>
 
 <p>Parametric value postfixes are defined as follows:</p>
 
