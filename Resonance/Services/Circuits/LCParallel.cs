@@ -1,8 +1,9 @@
 ﻿using Resonance.Services.Interfaces;
+using System.Numerics;
 
 namespace Resonance.Services.Circuits
 {
-    public class LCSeries : Circuit
+    public class LCParallel : Circuit
     {
         Unit _L;
         Unit _C;
@@ -173,38 +174,37 @@ namespace Resonance.Services.Circuits
                 _WL = value;
             }
         }
-
-        public LCSeries(Unit? r, Unit? l, Unit? c)
+        public LCParallel(Unit? r, Unit? l, Unit? c)
         {
             R = r;
             L = l;
             C = c;
         }
 
-        public static void F_LC(LCSeries lc)
+        public static void F_LC(LCParallel lc)
         {
             Calc_F(lc);
             Workflow(lc);
         }
 
-        public static void L_FC(LCSeries lc)
+        public static void L_FC(LCParallel lc)
         {
             Calc_L(lc);
             Workflow(lc);
         }
 
-        public static void C_FL(LCSeries lc)
+        public static void C_FL(LCParallel lc)
         {
             Calc_C(lc);
             Workflow(lc);
         }
 
-        public static void Input_F(LCSeries lc)
+        public static void Input_F(LCParallel lc)
         {
             Workflow(lc);
         }
 
-        static void Workflow(LCSeries lc)
+        static void Workflow(LCParallel lc)
         {
             Calc_XL(lc);
             Calc_XC(lc);
@@ -214,53 +214,56 @@ namespace Resonance.Services.Circuits
             Calc_WL(lc);
         }
 
-        static void Calc_F(LCSeries lc)
+        static void Calc_F(LCParallel lc)
         {
             lc.F.SIValue = 1 / (2 * Math.PI * Math.Sqrt(lc.L * lc.C));
         }
 
-        static void Calc_C(LCSeries lc)
+        static void Calc_C(LCParallel lc)
         {
             lc.C.SIValue = 1 / (Math.Pow(2 * Math.PI * lc.F, 2) * lc.L);
         }
 
-        static void Calc_L(LCSeries lc)
+        static void Calc_L(LCParallel lc)
         {
             lc.L.SIValue = 1 / (Math.Pow(2 * Math.PI * lc.F, 2) * lc.C);
         }
 
-        static void Calc_XL(LCSeries lc)
+        static void Calc_XL(LCParallel lc)
         {
             lc.XL.SIValue = Omega(lc.F) * lc.L;
         }
 
-        static void Calc_XC(LCSeries lc)
+        static void Calc_XC(LCParallel lc)
         {
             lc.XC.SIValue = 1 / (Omega(lc.F) * lc.C);
         }
 
-        static void Calc_Q(LCSeries lc)
+        static void Calc_Q(LCParallel lc)
         {
-            lc.Q.SIValue = lc.XL / lc.R;
+            lc.Q.SIValue = lc.R / lc.XL;
         }
 
-        static void Calc_BW(LCSeries lc)
+        static void Calc_BW(LCParallel lc)
         {
             lc.BW.SIValue = lc.F / lc.Q;
             lc.BW_FL.SIValue = lc.F - 0.5 * lc.BW;
             lc.BW_FH.SIValue = lc.F + 0.5 * lc.BW;
         }
 
-        static void Calc_Z(LCSeries lc)
+        static void Calc_Z(LCParallel lc)
         {
-            Calc_XL(lc);
-            Calc_XC(lc);
-            lc.Z.SIValue = lc.R + (lc.XL - lc.XC);
-        }  
-        
-        static void Calc_WL(LCSeries lc)
-        {            
-            double speedOfLight = 3e8;           
+            double omega = Omega(lc.F);
+            double YR = 1 / lc.R;
+            double YL = 1 / (omega * lc.L);
+            double YC = omega * lc.C;
+            double z = 1 / (YR + YL + YC);
+            lc.Z.SIValue = z;
+        }
+
+        static void Calc_WL(LCParallel lc)
+        {
+            double speedOfLight = 3e8;
             lc.WL.SIValue = speedOfLight / lc.F;
         }
 
@@ -268,6 +271,5 @@ namespace Resonance.Services.Circuits
         {
             return 2 * Math.PI * frequency;
         }
-
     }
 }

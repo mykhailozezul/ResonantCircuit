@@ -1,6 +1,4 @@
-﻿using Resonance.Services.Circuits;
-
-namespace Resonance.Services.Interfaces
+﻿namespace Resonance.Services.Interfaces
 {
     public interface Circuit
     {      
