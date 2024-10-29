@@ -26,17 +26,19 @@ L.SIValue = 0.1;  // Assign an SI value
 
 <h3><bold>Circuits</bold></h3>
 
-<p>Currently, there are two types of RLC circuits: series and parallel. To create instances of these circuits, use the following code:</p>
+<p>Currently, there are three types of RLC circuits: series and parallel. To create instances of these circuits, use the following code:</p>
 
 <code>var filterSeries = new LCSeries(R, L, C);  // Create a series RLC circuit
 var filterParallel = new LCParallel(R, L, C);  // Create a parallel RLC circuit
+var timer = new Timer555(R1, R2, C);
 </code>
 
-<p>Each constructor requires three parameters: resistance (R), inductance (L), and capacitance (C).</p>
+<p>Each resonant circuit constructor requires three parameters: resistance (R), inductance (L), and capacitance (C).</p>
+<p>Timer 555 constructor requires three parameters as well: resistance (R1), resistance (R2), and capacitance (C)</p>
 
 <h5><bold>Circuit Methods</bold></h5>
 
-<p>Each circuit type offers four public methods to explore various characteristics and responses:</p>
+<p>Each resonant circuit type offers four public methods to explore various characteristics and responses:</p>
 
 <ol>
   <li>F_LC - Calculates the resonant frequency based on values of L (inductance) and C (capacitance).</li>
@@ -50,6 +52,10 @@ var filterParallel = new LCParallel(R, L, C);  // Create a parallel RLC circuit
 <code>var plc = new LCParallel(R, L, C); // Create an instance of a parallel RLC circuit
 LCParallel.F_LC(plc); // Updates the circuit instance with new frequency based on L and C inputs
 </code>
+
+<p>Timer 555 offers one method for calculating frequency, high time, low time, period, and duty cycle in Astable mode</p>
+
+<code>Timer555.ASTABLE_MODE</code>
 
 <h3><bold>Sweeping values</bold></h3>
 
@@ -79,7 +85,7 @@ LCParallel.F_LC(plc); // Updates the circuit instance with new frequency based o
 
 <p>The result of the sweep is output in CSV format, allowing it to be saved to a CSV file for further processing with Excel tools and graphs. This method provides a comprehensive and interactive way to study circuit behavior under various conditions.</p>
 
-<p>Results include:</p>
+<p>Resonant Circuit results include:</p>
 <ul>
   <li>L - Inductance</li>
   <li>C - Capacitance</li>
@@ -94,6 +100,19 @@ LCParallel.F_LC(plc); // Updates the circuit instance with new frequency based o
   <li>Z - Impendance</li>
   <li>WL - Wave length</li>
 </ul>
+
+<p>Timer 555 results include</p>
+<ul>
+  <li>F - Frequency</li>
+  <li>R1 - Resistance 1</li>
+  <li>R2 - Resistance 2</li>
+  <li>C - Capacitance</li>
+  <li>TH - Time High (seconds)</li>
+  <li>TL - Time Low (seconds)</li>
+  <li>TX - Time Period (seconds)</li>
+  <li>DC - Duty Cycle (%)</li>
+</ul>
+
 <p>Console output</p>
 <img src="https://github.com/mykhailozezul/ResonantCircuit/assets/110465477/e1351846-2eb5-479a-85cc-a1dc7e8f3f4c">
 
