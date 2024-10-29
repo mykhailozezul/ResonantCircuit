@@ -1,4 +1,5 @@
-﻿using Resonance.Services;
+﻿using Resonance.Models;
+using Resonance.Services;
 using Resonance.Services.Circuits;
 
 namespace Resonance
@@ -7,49 +8,32 @@ namespace Resonance
     {
         static void Main(string[] args)
         {
-            /*Unit L = new Unit();
-            Unit C = new Unit();
-            Unit R = new Unit();
-
-            L.ParametricValue = "2u";
-            C.ParametricValue = "100u";
-            R.SIValue = 0.1;
-
-            var lc = new LCSeries(R, L, C);
-
-            var plc = new LCParallel(R, L, C);
-
-            var simulation = new UnitSweep(
-                new Unit() { ParametricValue="5000"},
-                new Unit() { ParametricValue="20000"},
-                new Unit() { ParametricValue="100"}
-            );
-            
-            //UnitSweep.Sweep<LCSeries>(simulation,lc ,lc.L, LCSeries.F_LC);
-
-            UnitSweep.Sweep<LCParallel>(simulation, plc, plc.F, LCParallel.Input_F);
-
-            Console.WriteLine(simulation.OutputResult);*/
-
             Unit R1 = new Unit();
             Unit R2 = new Unit();
             Unit C = new Unit();
 
             R1.ParametricValue = "0";
             R2.ParametricValue = "3";
-            C.ParametricValue = "100u";
+            C.ParametricValue = "1u";
 
             var timer = new Timer555(R1, R2, C);
 
-            var sim = new UnitSweep(
-                new Unit() { ParametricValue="1u" },
-                new Unit() { ParametricValue="10u" },
-                new Unit() { ParametricValue="1u" }
-            );
+            var list = new List<SweepContainer>() { 
+                new SweepContainer(timer.R1, new Unit() {ParametricValue="0"}, new Unit() {ParametricValue="3" }, new Unit() {ParametricValue="0.3"}),
+                new SweepContainer(timer.R2, new Unit() {ParametricValue="10" }, new Unit() {ParametricValue="1" }, new Unit() { ParametricValue="1"})
+            };
 
-            UnitSweep.Sweep(sim, timer, timer.C, Timer555.ASTABLE_MODE);
+            string output = UnitSweep.Sweep(timer, list, Timer555.ASTABLE_MODE, SweepModesEnum.FollowEndVal);
 
-            Console.WriteLine(sim.OutputResult);
+            Console.WriteLine(output);
+
+            output = UnitSweep.Sweep(timer, list, Timer555.ASTABLE_MODE, SweepModesEnum.FollowStep);
+
+            Console.WriteLine(output);
+
+            output = UnitSweep.Sweep(timer, list, Timer555.ASTABLE_MODE, SweepModesEnum.FollowEndValAndStep);
+
+            Console.WriteLine(output);
         }
         
     }
