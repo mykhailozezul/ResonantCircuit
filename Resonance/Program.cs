@@ -7,7 +7,7 @@ namespace Resonance
     {
         static void Main(string[] args)
         {
-            Unit L = new Unit();
+            /*Unit L = new Unit();
             Unit C = new Unit();
             Unit R = new Unit();
 
@@ -29,9 +29,27 @@ namespace Resonance
 
             UnitSweep.Sweep<LCParallel>(simulation, plc, plc.F, LCParallel.Input_F);
 
-            Console.WriteLine(simulation.OutputResult);
+            Console.WriteLine(simulation.OutputResult);*/
 
+            Unit R1 = new Unit();
+            Unit R2 = new Unit();
+            Unit C = new Unit();
 
+            R1.ParametricValue = "0";
+            R2.ParametricValue = "3";
+            C.ParametricValue = "100u";
+
+            var timer = new Timer555(R1, R2, C);
+
+            var sim = new UnitSweep(
+                new Unit() { ParametricValue="1u" },
+                new Unit() { ParametricValue="10u" },
+                new Unit() { ParametricValue="1u" }
+            );
+
+            UnitSweep.Sweep(sim, timer, timer.C, Timer555.ASTABLE_MODE);
+
+            Console.WriteLine(sim.OutputResult);
         }
         
     }
