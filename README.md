@@ -1,14 +1,22 @@
-<h3>Resonant Circuit Calculator</h3>
-<p>.NET 8-compatible classes for calculating parameters of parallel and series RLC resonant circuits. This personal project is designed for exploring, analyzing, and enhancing understanding of RLC filters and resonant circuits.</p>
-<h4>There are three main parts:</h4>
+<h2>Circuit Calculator</h2>
+<p>This personal project is designed for exploring, analyzing, and enhancing understanding of RLC filters, resonant circuits and recently added 555 timer.</p>
+<p>.NET 8-compatible classes for calculating parameters of:</p>
+<ul>
+  <li>Series RLC resonant circuit</li>
+  <li>Parallel RLC resonant circuit</li>
+  <li>555 Timer</li>
+</ul>
+
+<h2>There are three main parts</h2>
 <h3><bold>Units</bold></h3>
 
 <p>The Unit class functions as a value container. To create a Unit and assign values, use the following syntax:</p>
 
-<code>Unit L = new Unit();  // Create a unit
-L.ParametricValue = "2u";  // Assign a parametric value
-L.SIValue = 0.1;  // Assign an SI value
-</code>
+```C#
+Unit L = new Unit(); // Create a unit
+L.ParametricValue = "2u"; // Assign a parametric value
+L.SIValue = 0.1; // Assign a SI value
+```
 
 <p>Parametric value postfixes are defined as follows:</p>
 
@@ -26,64 +34,115 @@ L.SIValue = 0.1;  // Assign an SI value
 
 <h3><bold>Circuits</bold></h3>
 
-<p>Currently, there are three types of RLC circuits: series and parallel. To create instances of these circuits, use the following code:</p>
+<p>Currently, there are three types of circuits:</p>
+<ul>
+  <li>
+  series and parallel RLC circuits and 
+  </li>
+  <li>555 Timer in astable mode.
+  </li>
+</ul>
+<p>To create instances of these circuits, use the following constructors:</p>
 
-<code>var filterSeries = new LCSeries(R, L, C);  // Create a series RLC circuit
-var filterParallel = new LCParallel(R, L, C);  // Create a parallel RLC circuit
-var timer = new Timer555(R1, R2, C);
-</code>
+```C#
+var filterSeries = new LCSeries(R, L, C); // Create a series RLC circuit
+var filterParallel = new LCParallel(R, L, C); // Create a parallel RLC circuit
+var timer = new Timer555(R1, R2, C); //Create 555 Timer
+```
 
-<p>Each resonant circuit constructor requires three parameters: resistance (R), inductance (L), and capacitance (C).</p>
-<p>Timer 555 constructor requires three parameters as well: resistance (R1), resistance (R2), and capacitance (C)</p>
-
-<h5><bold>Circuit Methods</bold></h5>
+<h4><bold>Circuit Methods</bold></h4>
+<h5><bold>Resonant Circuits</bold></h5>
+<hr style="width: 150px;margin-left: 0;" />
 
 <p>Each resonant circuit type offers four public methods to explore various characteristics and responses:</p>
 
 <ol>
-  <li>F_LC - Calculates the resonant frequency based on values of L (inductance) and C (capacitance).</li>
-  <li>L_FC - Determines the value of L required for a desired frequency and given C.</li>
-  <li>C_FL - Computes the value of C needed for a desired frequency and given L.</li>
-  <li>Input_F - Applies a specific frequency to the circuit, allowing observation of how the resonant circuit responds to different frequencies.</li>
+  <li><b>F_LC</b> - Calculates the resonant frequency based on values of L (inductance) and C (capacitance).</li>
+  <li><b>L_FC</b> - Determines the value of L required for a desired frequency and given C.</li>
+  <li><b>C_FL</b> - Computes the value of C needed for a desired frequency and given L.</li>
+  <li><b>Input_F</b> - Applies a specific frequency to the circuit, allowing observation of how the resonant circuit responds to different frequencies.</li>
 </ol>
 
 <p>Here's how you can utilize these methods:</p>
 
-<code>var plc = new LCParallel(R, L, C); // Create an instance of a parallel RLC circuit
+```C#
+var plc = new LCParallel(R, L, C); // Create an instance of a parallel RLC circuit
 LCParallel.F_LC(plc); // Updates the circuit instance with new frequency based on L and C inputs
-</code>
+```
 
-<p>Timer 555 offers one method for calculating frequency, high time, low time, period, and duty cycle in Astable mode</p>
+<h4>555 Timer</h4>
+<hr style="width: 150px; margin-left: 0;" />
 
-<code>Timer555.ASTABLE_MODE</code>
+<p>Timer 555 offers one method for calculating series of parameters which include: frequency, high time, low time, period, and duty cycle in Astable mode</p>
+
+<ol><li><b>ASTABLE_MODE</b></li></ol>
+
+<p>Here is how you can utilize the method:</p>
+
+```C#
+Timer555.ASTABLE_MODE(timer);
+```
 
 <h3><bold>Sweeping values</bold></h3>
 
-<p>The Sweep class enables the application of an array of values to a circuit to observe how the circuit reacts to changes. For instance, you can apply a frequency sweep from 1 mHz to 100 mHz with a step of 5 mHz to an RLC circuit. This is particularly useful for analyzing how the circuit filters different frequencies.</p>
+<p>The Sweep class enables setting any circuit parameter within a specified range and adjusting it at a defined rate, allowing us to observe how the circuit reacts to changes. For instance, you can apply a frequency sweep from 1 mHz to 100 mHz with a step of 5 mHz to an RLC circuit. This is particularly useful for analyzing how the circuit filters different frequencies.</p>
 
-<p>To use this functionality, first create an instance of the UnitSweep class with start value, stop value, and step:</p>
+<p>In the following code we sweep through 2 parameters R1 and R2 and recalculate the 555 Timer output on each iteration</p>
 
-<code>var sweepSettings = new UnitSweep(
-    new Unit() { ParametricValue = "5000" },  // Start value
-    new Unit() { ParametricValue = "20000" }, // Stop value
-    new Unit() { ParametricValue = "100" }    // Step
-);</code>
+```C#
+//create circuit input params
+Unit R1 = new Unit();
+Unit R2 = new Unit();
+Unit C = new Unit();
 
-<p>Next, apply these settings to the circuit using the Sweep method:</p>
+//assign values to each param
+R1.ParametricValue = "0";
+R2.ParametricValue = "3";
+C.ParametricValue = "1u";
 
-<code>UnitSweep.Sweep<LCParallel>(
-    sweepSettings, 
-    circuitInstance, 
-    circuitInstance.F, 
-    LCParallel.Input_F
-);</code>
-<p>First parameter - sweep settings, second - instance of the LC circuit, third - the circuit's unit to be swept, fourth - method executed with each sweep value change</p>
+//create 555 Timer circuit
+var timer = new Timer555(R1, R2, C);
 
-<p>The results of the sweep are stored within the UnitSweep instance in the OutputResult property. Each sweep operation maintains its own results:</p>
+//create list of parameters which we want to sweep
+var list = new List<SweepContainer>() {
 
-<code>Console.WriteLine(sweepSettings.OutputResult); // Output sweep result to the console</code>
+    /*
+    SweepContainer - If we want to sweep values for R1 parameter between 0 Ohm and 3O hm with step 0.3 Ohm inside the Timer555, we pass its reference to the first parameter of SweepContainer
+    */
 
-<p>The result of the sweep is output in CSV format, allowing it to be saved to a CSV file for further processing with Excel tools and graphs. This method provides a comprehensive and interactive way to study circuit behavior under various conditions.</p>
+    //first sweep parameter
+    new SweepContainer(timer.R1, //pass reference to R1
+      new Unit() {
+        ParametricValue="0" //assign start value of 0 Ohm
+      },
+      new Unit() {
+        ParametricValue="3" //assign end value of 3 Ohm
+      },
+      new Unit() {
+        ParametricValue="0.3" //sweeping step of 0.3 Ohm
+      }
+    ),
+
+    //second sweep parameter
+    new SweepContainer(timer.R2, //pass reference to R2
+      new Unit() {
+        ParametricValue="10" //assign start value of 10 Ohm
+      },
+      new Unit() {
+        ParametricValue="1" //assign end value of 1 Ohm
+      },
+      new Unit() {
+        ParametricValue="1" //assign step of 1 Ohm
+      }
+    )
+
+};
+
+//perform sweeping for R1 and R2
+string output = UnitSweep.Sweep(timer, list, Timer555.ASTABLE_MODE, SweepModesEnum.FollowEndVal);
+
+//output is in CSV format for easy export to Excel and python
+```
 
 <p>Resonant Circuit results include:</p>
 <ul>
@@ -116,6 +175,5 @@ LCParallel.F_LC(plc); // Updates the circuit instance with new frequency based o
 <p>Console output</p>
 <img src="https://github.com/mykhailozezul/ResonantCircuit/assets/110465477/e1351846-2eb5-479a-85cc-a1dc7e8f3f4c">
 
-<p>Copied to Excel</p>
+<p>Copied to Excel resonant circuit analysis</p>
 <img src="https://github.com/mykhailozezul/ResonantCircuit/assets/110465477/c1a073ac-f658-4f98-8301-bd22788ef15d" >
-
